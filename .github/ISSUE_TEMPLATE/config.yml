@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: sinowisp (the flasher)
+    url: https://github.com/carlossless/sinowisp/issues
+    about: Problems reading or writing firmware are almost always sinowisp's domain, not this repo's.
+  - name: Open firmware for this platform
+    url: https://github.com/carlossless/smk
+    about: If you want to replace the firmware rather than patch it, start with smk.

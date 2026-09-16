@@ -1,0 +1,67 @@
+name: Device report (a keyboard that isn't mine)
+description: Tell us how this works, or doesn't, on a sibling board
+title: "[device] "
+labels: ["device-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks — reports from hardware I don't own are the most useful thing here.
+
+        **Please don't attach a firmware dump.** It's the vendor's code. The sha256
+        and the `--inspect` output below are what matter.
+
+  - type: input
+    id: brand
+    attributes:
+      label: What's on the box
+      placeholder: "e.g. AULA F75, Womier L65, Zifriend ZA68 Pro"
+    validations:
+      required: true
+
+  - type: input
+    id: usbids
+    attributes:
+      label: USB IDs
+      description: "`lsusb | grep -iE '258a|3554'` — paste the whole line(s)"
+      placeholder: "Bus 003 Device 007: ID 258a:010c SINO WEALTH Gaming KB"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: transport
+    attributes:
+      label: How is it connected
+      options:
+        - label: Wired USB
+        - label: 2.4 GHz dongle
+        - label: Bluetooth
+
+  - type: textarea
+    id: dump
+    attributes:
+      label: "`python3 linux/l65ctl.py dump`"
+      description: Whatever it prints — including the error, if it fails
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: knob
+    attributes:
+      label: "`python3 linux/knobprobe.py -t 20`"
+      description: Only if it has a knob. Spin it both ways, press it, double-tap it.
+      render: text
+
+  - type: textarea
+    id: firmware
+    attributes:
+      label: "`python3 firmware/patch.py yourdump.bin --inspect`"
+      description: Only if you've read your firmware out. sha256 + patch status, not the dump itself.
+      render: text
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: What worked, what didn't, what you had to change to get there.

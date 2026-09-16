@@ -1,0 +1,54 @@
+What the MIT LICENSE in this repository does and does not cover
+===============================================================
+
+COVERED — original work, MIT licensed
+-------------------------------------
+  linux/          knobd.py, knobprobe.py, l65ctl.py, l65battery.py
+  windows/        l65w.ps1
+  firmware/       patch.py
+  re/scripts/     the Ghidra headless export scripts
+  docs/           all documentation
+  systemd/, udev/ the unit and rule
+
+Use these however you like.
+
+
+NOT COVERED — third-party or vendor material
+--------------------------------------------
+
+firmware/*.bin
+  Patched builds derived from the stock firmware of a Womier L65. Copyright in
+  the underlying firmware belongs to its vendor (Womier / AULA / SinoWealth);
+  it is not the repository author's to license. They are published here for
+  interoperability and repair on hardware you own, under the reverse-
+  engineering allowances of your local law (e.g. 17 U.S.C. 1201(f) in the US,
+  Art. 6 of Directive 2009/24/EC in the EU).
+
+  The unmodified stock firmware is deliberately NOT redistributed. Read your
+  own board out with sinowisp and use firmware/patch.py — see firmware/README.md.
+
+re/exports/fw_*.c
+  Ghidra decompiler output from that same keyboard firmware. Machine-generated
+  from vendor code, published as a protocol reference. Same position as above:
+  read it, learn from it, do not treat it as MIT-licensed source.
+
+re/exports/cfg_funcs.c, re/exports/hid_export.c, re/exports/music_export.c
+  Ghidra decompiler output from "OemDrv.exe", the Windows Womier/AULA
+  configuration application. Copyright in that application belongs to its
+  vendor. These are published for the same interoperability purpose — they are
+  how the HID command vocabulary and config block layout documented in
+  docs/L65-protocol.md were determined, and they are included so that
+  documentation can be independently checked.
+
+  OemDrv.exe itself is NOT redistributed here.
+
+sinowisp
+  Not included in this repository. It is a separate GPL-3.0 project by
+  Karolis Stasaitis — https://github.com/carlossless/sinowisp — and should be
+  downloaded from its own releases page. Earlier private revisions of this work
+  vendored its binaries and a decompiled copy of its source; both were removed
+  before publication, since the real thing is available upstream under its own
+  licence.
+
+"Womier", "AULA" and "SinoWealth" are trademarks of their respective owners.
+This project is not affiliated with, endorsed by, or supported by any of them.

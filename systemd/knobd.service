@@ -1,0 +1,26 @@
+# Womier L65 knob daemon — systemd user service.
+# Install:
+#   install -Dm755 linux/knobd.py  ~/.local/bin/knobd.py
+#   install -Dm755 linux/l65ctl.py ~/.local/bin/l65ctl.py   # lighting presets need this
+#   mkdir -p ~/.config/systemd/user && cp systemd/knobd.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now knobd.service
+#
+# Access: install udev/60-womier-l65.rules — its uaccess tags cover the input
+# nodes, so the daemon does NOT need the 'input' group. That matters here: a
+# running systemd --user caches its supplementary groups at startup, so a group
+# added later will not reach this service until the whole session restarts.
+
+[Unit]
+Description=Womier L65 knob daemon
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+# unbuffered, or Python holds the daemon's output and journalctl shows nothing
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/.local/bin/knobd.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

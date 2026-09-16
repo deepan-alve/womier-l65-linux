@@ -1,0 +1,31 @@
+# Womier L65 — device access for l65ctl.py (hidraw) and knobd.py (input).
+# Install:
+#   sudo cp udev/60-womier-l65.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+# then re-plug the keyboard / dongle.
+
+# --- hidraw: lighting / remap / config, for l65ctl.py ---
+# wired keyboard (SinoWealth SH68F90)
+KERNEL=="hidraw*", ATTRS{idVendor}=="258a", ATTRS{idProduct}=="010c", MODE="0660", TAG+="uaccess"
+# 2.4GHz dongle (Beken BK3632 "Compx" receiver)
+KERNEL=="hidraw*", ATTRS{idVendor}=="3554", ATTRS{idProduct}=="fa09", MODE="0660", TAG+="uaccess"
+
+# --- input: knob events, for knobd.py ---
+# knobd must both READ and EVIOCGRAB the knob's event node. Without this it
+# needs the 'input' group, which only takes effect after a full re-login (and
+# not even then for anything already spawned by a running systemd --user, which
+# caches its credentials at startup). uaccess hands the ACL straight to whoever
+# is logged in at the seat, so the daemon works immediately and after every
+# replug - which is what makes autostarting it as a user service reliable.
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{idVendor}=="258a", ATTRS{idProduct}=="010c", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{idVendor}=="3554", ATTRS{idProduct}=="fa09", TAG+="uaccess"
+
+# --- backlight (ctrl+rotate brightness) needs NO rule here ---
+# Deliberately not handled by udev. TAG+="uaccess" does NOT work on a backlight:
+# logind implements uaccess by setting an ACL on a device node in /dev, and a
+# backlight has none - `brightness` is a sysfs attribute. (That is why the
+# brightness-udev package uses an explicit RUN+= chgrp/chmod instead, which
+# already leaves it root:video 0664.)
+# So the requirement is simply membership of the 'video' group. Note a running
+# systemd --user caches its supplementary groups at startup, so after `usermod
+# -aG video` the daemon only picks it up once the whole session restarts.

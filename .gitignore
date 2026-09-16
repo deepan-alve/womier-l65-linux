@@ -1,0 +1,28 @@
+# python
+__pycache__/
+*.pyc
+
+# ghidra project databases and toolchains - reproducible, far too big to track
+work/
+ghidra_*/
+jdk-*/
+*.rep/
+*.gpr
+*.lock
+
+# vendor binaries - proprietary, deliberately not redistributed here
+*.exe
+OemDrv*
+Womier_L65*
+sinowisp
+sinowisp-*.tar.gz
+
+# your own firmware dumps - yours, not mine to host. keep them, don't commit them
+*.orig
+stock.bin
+dump.bin
+
+# scratch
+*.log
+*.tmp
+backup-*/
